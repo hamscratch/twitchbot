@@ -20,7 +20,7 @@
 }
 */
 
-const WEBHOOK_URL = '';
+const WEBHOOK_URL = secrets::DISCORD_WEBHOOK_URL;
 
 public $id;
 public $user_id;
