@@ -33,6 +33,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
 
 	$result = curl_exec($ch);
+
+	if ($result) {
+		return json_decode($result, true);
+	} else {
+		return false;
+	}
 }
 
 
