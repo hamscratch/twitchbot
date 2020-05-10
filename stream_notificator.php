@@ -8,7 +8,7 @@ Mike = 58761711
 
 */ 
 
-$user_id = $argv1
+$user_id = $argv1;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
 	$challenge = $_GET["hub.challenge"];
