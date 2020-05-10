@@ -17,10 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$url = 'https://api.twitch.tv/helix/webhooks/hub';
 
 	$data = [
-		'hub.callback' => 'http://34.71.198.211/',
+		'hub.callback' => 'http://34.71.198.211/discord_commenter.php',
 		'hub.mode' => 'subscribe',
 		'hub.topic' => 'https://api.twitch.tv/helix/streams?user_id=122085265',
-		'hub.lease_seconds' => '864000', // 10 days
+		'hub.lease_seconds' => '864000',
 		];
 
 	$payload = json_encode($data);
