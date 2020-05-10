@@ -22,6 +22,8 @@
 
 const WEBHOOK_URL = secrets::DISCORD_WEBHOOK_URL;
 
+$payload = file_get_contents('php://input');
+
 public $id;
 public $user_id;
 public $user_name;
