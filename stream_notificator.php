@@ -17,8 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 	exit();
 }
 
-// subscribes to a given user's id. subscription lease set to 10 days.
-// must be renewed. 
+/* subscribes to a given user's id. subscription lease set to 10 days.
+must be renewed. 
+*/ 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 	$url = "https://api.twitch.tv/helix/webhooks/hub";
@@ -47,8 +49,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		return false;
 	}
 }
-
-
-// TO DO LIST
-// .gitignore for the password
-// 
