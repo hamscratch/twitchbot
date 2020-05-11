@@ -40,9 +40,20 @@ if (php_sapi_name() ==="cli") {
     } else {
         return false;
     }
-} else {
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    verifyHubChallenge();
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $payload = file_get_contents('php://input');
+    $commeter = new DiscordCommenter($payload);
+}
+
+public function verifyHubChallenge() {
     $challenge = $_GET['hub.challenge'];
     http_response_code(200);
     echo $challenge;
     exit();
-}   
+}
+
+public function checkNotification() {
+
+}
