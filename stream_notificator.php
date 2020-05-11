@@ -12,9 +12,10 @@ if (php_sapi_name() ==="cli") {
     $twitch_auth_token = Secrets::TWITCH_AUTH_TOKEN;
     $host_url = Secrets::HOST_URL;
 
-    $url = "https://api.twitch.tv/helix/webhooks/hub";
+    $hub_url = "https://api.twitch.tv/helix/webhooks/hub";
     $headers = array("Authorization: Bearer {$twitch_auth_token}", "Content-Type: application/json");
 
+    // 864000 seconds = 10 days
     $data = [
         "hub.callback" => "{$host_url}/stream_notificator.php",
         "hub.mode" => "subscribe",
@@ -26,7 +27,7 @@ if (php_sapi_name() ==="cli") {
 
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_URL, $hub_url);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
