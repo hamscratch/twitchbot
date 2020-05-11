@@ -43,7 +43,8 @@ if (php_sapi_name() ==="cli") {
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
     return verifyHubChallenge();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $payload = file_get_contents('php://input');
+    $raw_payload = file_get_contents('php://input');
+    $payload = json_decode($raw_payload);
     $commenter = new DiscordCommenter($payload);
 }
 
