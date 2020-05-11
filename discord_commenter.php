@@ -43,12 +43,14 @@ class DiscordCommenter {
         $this->thumbnail_url = $payload['thumbnail_url'];
     }
 
-    if ($type === 'live') {
-        $payload = "'content': 'Looks like {$user_name} has started streaming. You can check out their latest stream at https://www.twitch.tv/{$user_name}.'"
-        return $this->sendMessage($payload);
+    public function run() {
+        if ($type === 'live') {
+            $payload = "'content': 'Looks like {$user_name} has started streaming. You can check out their latest stream at https://www.twitch.tv/{$user_name}.'"
+            return sendMessage($payload);
+        }
     }
 
-    public sendMessage($payload) {
+    public  function sendMessage($payload) {
         $header = ['content-type': 'application/json'];
 
         $ch = curl_init();
