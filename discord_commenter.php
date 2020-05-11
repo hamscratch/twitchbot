@@ -1,7 +1,5 @@
 <? php
 
-require "Secrets.php";
-
 // this is where the payload from twitch will come and report to the discord!
 // EXAMPLE PAYLOAD FROM ENDPOINT
 /*
