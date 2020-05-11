@@ -20,7 +20,6 @@
 }
 */
 
-const WEBHOOK_URL = Secrets::DISCORD_WEBHOOK_URL;
 
 public $id;
 public $user_id;
@@ -32,6 +31,9 @@ public $started_at;
 public $thumbnail_url;
 
 class DiscordCommenter {
+
+    const WEBHOOK_URL = Secrets::DISCORD_WEBHOOK_URL;
+
     public function __construct($payload) {
         $this->id = $payload['id'];
         $this->user_id = $payload['user_id'];
@@ -44,7 +46,7 @@ class DiscordCommenter {
     }
 
     public function run() {
-        if ($type === 'live') {
+        if ($this->type === 'live') {
             $payload = "'content': 'Looks like {$user_name} has started streaming. You can check out their latest stream at https://www.twitch.tv/{$user_name}.'"
             return sendMessage($payload);
         }

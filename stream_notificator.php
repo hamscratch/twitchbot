@@ -47,10 +47,11 @@ if (php_sapi_name() ==="cli") {
     $raw_payload = file_get_contents('php://input');
     $payload = json_decode($raw_payload);
     $commenter = new DiscordCommenter($payload);
-    $run = $commenter->run();
+    
+    return $commenter->run();
 }
 
-public function verifyHubChallenge() {
+function verifyHubChallenge() {
     $challenge = $_GET['hub.challenge'];
     http_response_code(200);
     echo $challenge;
