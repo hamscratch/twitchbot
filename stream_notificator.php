@@ -1,6 +1,6 @@
 <?php
 
-require "Secrets.php";
+require __DIR__ . '/' . 'Loader.php';
 
 if (php_sapi_name() ==="cli") {
     if (sizeof($argv > 1)) {
