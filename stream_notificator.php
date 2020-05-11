@@ -8,10 +8,12 @@ Mike = 58761711
 
 */ 
 
+$twitch_auth_token = secrets::TWITCH_AUTH_TOKEN;
+
 if (php_sapi_name() == "cli") {
     $url = "https://api.twitch.tv/helix/webhooks/hub";
 
-    $headers = array("Authorization: Bearer luk95nttvlwlf33uhserhodmhrdzvq", "Content-Type: application/json");
+    $headers = array("Authorization: Bearer {$twitch_auth_token}", "Content-Type: application/json");
 
     $data = [
         "hub.callback" => "http://34.71.198.211/stream_notificator.php",
