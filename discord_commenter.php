@@ -34,7 +34,6 @@ public $started_at;
 public $thumbnail_url;
 
 class DiscordCommenter {
-
     public function __construct($payload) {
         $this->id = $payload['id'];
         $this->user_id = $payload['user_id'];
@@ -46,8 +45,8 @@ class DiscordCommenter {
         $this->thumbnail_url = $payload['thumbnail_url'];
     }
 
-    if ($type == 'live') {
-        $payload = "Looks like {$user_name} has started streaming. You can check out their latest stream at https://www.twitch.tv/{$user_name}."
+    if ($type === 'live') {
+        $payload = "'content': 'Looks like {$user_name} has started streaming. You can check out their latest stream at https://www.twitch.tv/{$user_name}.'"
         return $this->sendMessage($payload);
     }
 
