@@ -12,7 +12,7 @@ $twitch_auth_token = secrets::TWITCH_AUTH_TOKEN;
 
 if (php_sapi_name() == "cli") {
     $url = "https://api.twitch.tv/helix/webhooks/hub";
-
+    $twitch_auth_token = secrets::TWITCH_AUTH_TOKEN;
     $headers = array("Authorization: Bearer {$twitch_auth_token}", "Content-Type: application/json");
 
     $data = [
@@ -45,5 +45,4 @@ if (php_sapi_name() == "cli") {
     http_response_code(200);
     echo $challenge;
     exit();
-    }
-}
+}   
