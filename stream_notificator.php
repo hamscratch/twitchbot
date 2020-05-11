@@ -8,26 +8,13 @@ Mike = 58761711
 
 */ 
 
-$user_id = $argv;
-
-if ($_SERVER['REQUEST_METHOD'] === "GET") {
-	if (isset($_GET['hub.challenge'])) {
-		$challenge = $_GET['hub.challenge'];
-		http_response_code(200);
-		echo $challenge;
-		exit();
-	}
-}
-
-/* subscribes to a given user's id. subscription lease set to 10 days.
-must be renewed. 
-*/ 
+if (php_sapi_name() == "cli") {
 	$url = "https://api.twitch.tv/helix/webhooks/hub";
 
 	$headers = array("Authorization: Bearer luk95nttvlwlf33uhserhodmhrdzvq", "Content-Type: application/json");
 
 	$data = [
-		"hub.callback" => "http://34.71.198.211/discord_commenter.php",
+		"hub.callback" => "http://34.71.198.211/stream_notificator.php",
 		"hub.mode" => "subscribe",
 		"hub.topic" => "https://api.twitch.tv/helix/streams?user_id=122085265",
 		"hub.lease_seconds" => "864000",
@@ -51,4 +38,10 @@ must be renewed.
 	} else {
 		return false;
 	}
-
+} else {
+	$challenge = $_GET['hub.challenge'];
+	http_response_code(200);
+	echo $challenge;
+	exit();
+	}
+}
