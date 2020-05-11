@@ -44,7 +44,7 @@ if (php_sapi_name() ==="cli") {
     return verifyHubChallenge();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $payload = file_get_contents('php://input');
-    $commeter = new DiscordCommenter($payload);
+    $commenter = new DiscordCommenter($payload);
 }
 
 public function verifyHubChallenge() {
@@ -54,6 +54,9 @@ public function verifyHubChallenge() {
     exit();
 }
 
+/*
+just a thought for future stuff
 public function checkNotification() {
 
 }
+*/
