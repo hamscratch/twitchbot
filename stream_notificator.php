@@ -8,8 +8,6 @@ Mike = 58761711
 
 */ 
 
-$twitch_auth_token = secrets::TWITCH_AUTH_TOKEN;
-
 if (php_sapi_name() == "cli") {
     $url = "https://api.twitch.tv/helix/webhooks/hub";
     $twitch_auth_token = secrets::TWITCH_AUTH_TOKEN;
