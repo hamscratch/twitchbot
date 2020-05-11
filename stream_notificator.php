@@ -1,22 +1,17 @@
 <?php
 
-/* set up cron to run this with an argument of a USER_ID
-
-IDs:
-Pete = 122085265
-Mike = 58761711
-
-*/ 
-
 if (php_sapi_name() == "cli") {
+    $twitch_auth_token = Secrets::TWITCH_AUTH_TOKEN;
+    $twitch_user_id = Secrets::TWITCH_USER_UD;
+    $host_url = Secrets::HOST_URL;
+
     $url = "https://api.twitch.tv/helix/webhooks/hub";
-    $twitch_auth_token = secrets::TWITCH_AUTH_TOKEN;
     $headers = array("Authorization: Bearer {$twitch_auth_token}", "Content-Type: application/json");
 
     $data = [
-        "hub.callback" => "http://34.71.198.211/stream_notificator.php",
+        "hub.callback" => "{$host_url}/stream_notificator.php",
         "hub.mode" => "subscribe",
-        "hub.topic" => "https://api.twitch.tv/helix/streams?user_id=122085265",
+        "hub.topic" => "https://api.twitch.tv/helix/streams?user_id={$twitch_user_id}",
         "hub.lease_seconds" => "864000",
         ];
 

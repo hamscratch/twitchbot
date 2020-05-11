@@ -20,7 +20,7 @@
 }
 */
 
-const WEBHOOK_URL = secrets::DISCORD_WEBHOOK_URL;
+$webhook_url = Secrets::DISCORD_WEBHOOK_URL;
 
 $payload = file_get_contents('php://input');
 
@@ -54,7 +54,7 @@ public sendMessage($payload) {
 
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, self::WEBHOOK_URL);
+    curl_setopt($ch, CURLOPT_URL, $webhook_url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
