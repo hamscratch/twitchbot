@@ -1,5 +1,7 @@
 <? php
 
+require "Secrets.php";
+
 // this is where the payload from twitch will come and report to the discord!
 // EXAMPLE PAYLOAD FROM ENDPOINT
 /*
@@ -33,43 +35,47 @@ public $type;
 public $started_at;
 public $thumbnail_url;
 
-public function __construct($payload) {
-    $this->id = $payload['id'];
-    $this->user_id = $payload['user_id'];
-    $this->user_name = $payload['user_name'];
-    $this->title = $payload['title'];
-    $this->game_id = $payload['game_id'];
-    $this->type = $payload['type'];
-    $this->started_at = $payload['started_at'];
-    $this->thumbnail_url = $payload['thumbnail_url'];
-}
+class DiscordCommenter {
 
-if ($type == 'live') {
-    $payload = "Looks like {$user_name} has started streaming. You can check out their latest stream at https://www.twitch.tv/{$user_name}."
-    return $this->sendMessage($payload);
-}
-
-public sendMessage($payload) {
-    $header = ['content-type': 'application/json'];
-
-    $ch = curl_init();
-
-    curl_setopt($ch, CURLOPT_URL, $webhook_url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-
-    $result = curl_exec($ch);
-
-    if ($result) {
-        return json_decode($result, true);
-    } else {
-        return false;
+    public function __construct($payload) {
+        $this->id = $payload['id'];
+        $this->user_id = $payload['user_id'];
+        $this->user_name = $payload['user_name'];
+        $this->title = $payload['title'];
+        $this->game_id = $payload['game_id'];
+        $this->type = $payload['type'];
+        $this->started_at = $payload['started_at'];
+        $this->thumbnail_url = $payload['thumbnail_url'];
     }
-}
 
-// pipe dreams
-public function getGameTitle () {
+    if ($type == 'live') {
+        $payload = "Looks like {$user_name} has started streaming. You can check out their latest stream at https://www.twitch.tv/{$user_name}."
+        return $this->sendMessage($payload);
+    }
 
+    public sendMessage($payload) {
+        $header = ['content-type': 'application/json'];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $webhook_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+        $result = curl_exec($ch);
+
+        if ($result) {
+            return json_decode($result, true);
+        } else {
+            return false;
+        }
+    }
+
+    /* pipe dreams
+    public function getGameTitle () {
+
+    }
+    */
 }

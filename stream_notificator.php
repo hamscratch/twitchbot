@@ -1,8 +1,15 @@
 <?php
 
-if (php_sapi_name() == "cli") {
+require "Secrets.php";
+
+if (php_sapi_name() ==="cli") {
+    if (sizeof($argv > 1)) {
+        $twitch_user_id = $argv[1];
+    } else {
+        $twitch_user_id = Secrets::TWITCH_USER_ID;
+    }
+
     $twitch_auth_token = Secrets::TWITCH_AUTH_TOKEN;
-    $twitch_user_id = Secrets::TWITCH_USER_UD;
     $host_url = Secrets::HOST_URL;
 
     $url = "https://api.twitch.tv/helix/webhooks/hub";
