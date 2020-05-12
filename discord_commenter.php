@@ -47,7 +47,7 @@ class DiscordCommenter {
 
     public function run() {
         if ($this->type === 'live') {
-            $payload = "'content': 'Looks like {$user_name} has started streaming. You can check out their latest stream at https://www.twitch.tv/{$user_name}.'"
+            $payload = "'content': 'Looks like {$user_name} has started streaming. You can check out their latest stream at https://www.twitch.tv/{$user_name}.'";
             return sendMessage($payload);
         }
     }
