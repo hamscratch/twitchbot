@@ -43,6 +43,8 @@ class DiscordCommenter {
         $this->type = $payload['type'];
         $this->started_at = $payload['started_at'];
         $this->thumbnail_url = $payload['thumbnail_url'];
+
+        $this->
     }
 
     /** 
@@ -52,8 +54,9 @@ class DiscordCommenter {
      */
     public function run() {
         if ($this->type === 'live') {
-            $payload = ["'content': 'Looks like {$user_name} has started streaming. You can check out their latest stream at https://www.twitch.tv/{$user_name}.'"];
-            return sendMessage($payload);
+            $game_name = $this->getGameTitle($game_id);
+            $payload = ["'content': 'Looks like {$user_name} has started streaming their {$game_name} hijinx. You can check out their latest stream at https://www.twitch.tv/{$user_name}.'"];
+            return $this->sendMessage($payload);
         }
     }
 
@@ -83,9 +86,24 @@ class DiscordCommenter {
         }
     }
 
-    /* pipe dreams
-    public function getGameTitle () {
+    /** 
+     * Finds a games title by game_id
+     *
+     * @param string $game_id : contents of Discord webhook payload to send
+     * @return string $result['data']['name'] : name of game
+     */
+    public function getGameTitle (string $game_id) : string {
+        $twitch_auth_token = Secrets::TWITCH_AUTH_TOKEN;
+        $twitch_client_id = Secrets::TWITCH_CLIENT_ID;
 
+        $url = 'https://api.twitch.tv/helix/games';
+        $headers = ["Client-ID: {$twitch_client_id}", "Authorization: Bearer {$twitch_auth_token}"];
+        $method = 'GET';
+
+        // fuck i don't have this in this class
+        $result = $this->invokeTwitchApi($url, $headers, $game_id, $method);
+
+        return $result['data']['name'];
     }
-    */
+    
 }

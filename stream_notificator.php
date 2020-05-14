@@ -5,7 +5,7 @@ require __DIR__ . '/' . 'Loader.php';
 /**
  * 
  */
-class streamNotificator {
+class StreamNotificator {
 
     public $twitch_auth_token;
     public $host_url;
@@ -24,14 +24,14 @@ class streamNotificator {
      * @param string $method : GET, POST
      * @return bool true : no idea
      */
-    public function invokeTwitchApi (string $url, array $headers, $method, array $parameters = false) {
+    public function invokeTwitchApi (string $url, array $headers, string $method, array $parameters = false) : array {
         
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-        if ($method === POST) {
+        if ($method === 'POST') {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $parameters);
         }
 
@@ -65,7 +65,7 @@ class streamNotificator {
         
         if ($twitch_user_id) {
 
-            $is_valid_token = isTokenValid($twitch_auth_token);
+            $is_valid_token = $this->isTokenValid($twitch_auth_token);
 
             if ($is_valid_token) {
                 $hub_url = "https://api.twitch.tv/helix/webhooks/hub";
@@ -81,7 +81,7 @@ class streamNotificator {
 
                 $payload = json_encode($data);
 
-                $exec = invokeTwitchApi($hub_url, $headers, POST, $payload);
+                $exec = $this->invokeTwitchApi($hub_url, $headers, 'POST', $payload);
             } else {
                 // i should log this failure and report it
                 $error_comment = "HALT, NONE SHALL PASS WITHOUT A VALID TOKEN...WHICH YOU DO NOT POSESS.";
@@ -91,7 +91,7 @@ class streamNotificator {
         } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
             // if we get a challenge for our subscription via GET request
             
-            verifyHubChallenge();
+            $this->verifyHubChallenge();
         } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // if we get a payload with stream info via POST request
 
@@ -107,9 +107,9 @@ class streamNotificator {
      * If file receives a GET request, this will verify the 
      * hub challenge. 
      *
-     * @return ?
+     * @return : void
      */
-    public function verifyHubChallenge() {
+    public function verifyHubChallenge() : void {
         $challenge = $_GET['hub.challenge'];
         http_response_code(200);
         echo $challenge;
@@ -122,16 +122,26 @@ class streamNotificator {
      * @param string $token : current token
      * @return bool true : if token is valid
      */
-    public function isTokenValid(string $token) {
+    public function isTokenValid(string $token) : bool {
+        /*
+        Response body:
+            {
+            "client_id":"<CLIENT_ID>",
+            "scopes":[],
+            "expires_in":4536347
+             }
+        */
+
         $validation_url = 'https://id.twitch.tv/oauth2/validate';
         $headers = "Authorization: OAuth {$token}";
-        $method = GET;
+        $method = 'GET';
 
-        $response = invokeTwitchApi($validation_url, $headers, $method);
+        $response = $this->invokeTwitchApi($validation_url, $headers, $method);
 
-        if ($response) {
+        if ($response['expires_in'] >= 10000) {
             return true;
         } else {
+            // return $this->renewToken();
             return false;
         }
     }
