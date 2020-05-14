@@ -34,7 +34,7 @@ class DiscordCommenter {
 
     const WEBHOOK_URL = Secrets::DISCORD_WEBHOOK_URL;
 
-    public function __construct($payload) {
+    public function __construct(array $payload) {
         $this->id = $payload['id'];
         $this->user_id = $payload['user_id'];
         $this->user_name = $payload['user_name'];
@@ -45,14 +45,25 @@ class DiscordCommenter {
         $this->thumbnail_url = $payload['thumbnail_url'];
     }
 
+    /** 
+     * Checks if stream is live and sends a payload to sendMessage()
+     *
+     * @return array
+     */
     public function run() {
         if ($this->type === 'live') {
-            $payload = "'content': 'Looks like {$user_name} has started streaming. You can check out their latest stream at https://www.twitch.tv/{$user_name}.'";
+            $payload = ["'content': 'Looks like {$user_name} has started streaming. You can check out their latest stream at https://www.twitch.tv/{$user_name}.'"];
             return sendMessage($payload);
         }
     }
 
-    public  function sendMessage($payload) {
+    /** 
+     * Sends a payload to Discord webhook
+     *
+     * @param array $payload : contents of Discord webhook payload to send
+     * @return bool true : on success of curl
+     */
+    public  function sendMessage(array $payload) : array {
         $header = ['content-type': 'application/json'];
 
         $ch = curl_init();
