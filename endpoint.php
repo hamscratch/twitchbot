@@ -13,12 +13,12 @@ require __DIR__ . '/' . 'Loader.php';
 $stream_notificator = new StreamNotificator();
 
 if (count($argv) > 1) {
-	$twitch_user_id = $argv[1];
-	$stream_notificator->subscribeToUser($twitch_user_id);
+    $twitch_user_id = $argv[1];
+    $stream_notificator->subscribeToUser($twitch_user_id);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // if we get a challenge for our subscription via GET request
             
-	verifyHubChallenge();
+    verifyHubChallenge();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // if we get a payload with stream info via POST request
 
