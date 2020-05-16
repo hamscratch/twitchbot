@@ -12,7 +12,7 @@ class StreamNotificator {
     public function __construct() {
         $this->twitch_auth_token = Secrets::TWITCH_AUTH_TOKEN;
         $this->host_url = Secrets::HOST_URL;
-        $this->endpoint_url = Secrets::ENDPOINT_URL
+        $this->endpoint_url = Secrets::ENDPOINT_URL;
     }
 
     /** 
