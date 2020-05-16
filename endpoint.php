@@ -12,7 +12,7 @@ require __DIR__ . '/' . 'Loader.php';
 
 $stream_notificator = new StreamNotificator();
 
-if (sizeof($argv > 1)) {
+if (count($argv) > 1) {
 	$twitch_user_id = $argv[1];
 	$stream_notificator->subscribeToUser($twitch_user_id);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {

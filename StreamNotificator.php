@@ -24,7 +24,7 @@ class StreamNotificator {
      * @param string $method : GET, POST
      * @return bool true : no idea
      */
-    public function invokeTwitchApi (string $url, array $headers, string $method, array $parameters = false) : array {
+    public function invokeTwitchApi (string $url, array $headers, string $method, string $parameters = NULL) : array {
         
         $ch = curl_init();
 
@@ -56,17 +56,17 @@ class StreamNotificator {
      */
     public function subscribeToUser(string $twitch_user_id) {
         
-        $is_valid_token = $this->isTokenValid($twitch_auth_token);
+        $is_valid_token = $this->isTokenValid($this->twitch_auth_token);
 
         if ($is_valid_token) {
             $hub_url = "https://api.twitch.tv/helix/webhooks/hub";
-            $headers = ["Authorization: Bearer {$twitch_auth_token}", "Content-Type: application/json"];
+            $headers = ["Authorization: Bearer {$this->twitch_auth_token}", "Content-Type: application/json"];
 
             // 864000 seconds = 10 days
             $data = [
-                "hub.callback" => "{$host_url}/{$endpoint_url}}",
+                "hub.callback" => "{$this->host_url}/{$this->endpoint_url}}",
                 "hub.mode" => "subscribe",
-                "hub.topic" => "https://api.twitch.tv/helix/streams?user_id={$twitch_user_id}",
+                "hub.topic" => "https://api.twitch.tv/helix/streams?user_id={Ftwitch_user_id}",
                 "hub.lease_seconds" => "864000",
                 ];
 
@@ -98,7 +98,7 @@ class StreamNotificator {
         */
 
         $validation_url = 'https://id.twitch.tv/oauth2/validate';
-        $headers = "Authorization: OAuth {$token}";
+        $headers = ["Authorization: OAuth {$token}"];
         $method = 'GET';
 
         $response = $this->invokeTwitchApi($validation_url, $headers, $method);
