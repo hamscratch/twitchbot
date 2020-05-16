@@ -20,21 +20,20 @@
 }
 */
 
-
-public $id;
-public $user_id;
-public $user_name;
-public $title;
-public $game_id;
-public $type;
-public $started_at;
-public $thumbnail_url;
-
 class DiscordCommenter {
 
-    const WEBHOOK_URL = Secrets::DISCORD_WEBHOOK_URL;
+    public $id;
+    public $user_id;
+    public $user_name;
+    public $title;
+    public $game_id;
+    public $type;
+    public $started_at;
+    public $thumbnail_url;
 
-    public function __construct(array $payload) {
+    public $webhook_url;
+
+    public function __construct($payload) {
         $this->id = $payload['id'];
         $this->user_id = $payload['user_id'];
         $this->user_name = $payload['user_name'];
@@ -44,7 +43,7 @@ class DiscordCommenter {
         $this->started_at = $payload['started_at'];
         $this->thumbnail_url = $payload['thumbnail_url'];
 
-        $this->
+        $this->webhook_url = Secrets::DISCORD_WEBHOOK_URL;
     }
 
     /** 
@@ -54,8 +53,8 @@ class DiscordCommenter {
      */
     public function run() {
         if ($this->type === 'live') {
-            $game_name = $this->getGameTitle($game_id);
-            $payload = ["'content': 'Looks like {$user_name} has started streaming their {$game_name} hijinx. You can check out their latest stream at https://www.twitch.tv/{$user_name}.'"];
+            $game_title = 'pee'; //$this->getGameTitle($game_id);
+            $payload = ["'content': 'Looks like {$user_name} has started streaming their {$game_title} hijinx. You can check out their latest stream at https://www.twitch.tv/{$user_name}.'"];
             return $this->sendMessage($payload);
         }
     }
@@ -71,7 +70,7 @@ class DiscordCommenter {
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, self::WEBHOOK_URL);
+        curl_setopt($ch, CURLOPT_URL, $this->webhook_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -86,7 +85,7 @@ class DiscordCommenter {
         }
     }
 
-    /** 
+    /** CURRENTLY NOT IN USE 5/16/20
      * Finds a games title by game_id
      *
      * @param string $game_id : contents of Discord webhook payload to send
