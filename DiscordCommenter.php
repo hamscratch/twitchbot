@@ -1,4 +1,4 @@
-<? php
+<?php
 
 // this is where the payload from twitch will come and report to the discord!
 // EXAMPLE PAYLOAD FROM ENDPOINT
@@ -20,6 +20,7 @@
 }
 */
 
+
 class DiscordCommenter {
 
     public $id;
@@ -33,7 +34,9 @@ class DiscordCommenter {
 
     public $webhook_url;
 
-    public function __construct($payload) {
+    public function __construct(array $data) {
+        $payload = $data['data'];
+
         $this->id = $payload['id'];
         $this->user_id = $payload['user_id'];
         $this->user_name = $payload['user_name'];
@@ -54,7 +57,10 @@ class DiscordCommenter {
     public function run() {
         if ($this->type === 'live') {
             $game_title = 'pee'; //$this->getGameTitle($game_id);
-            $payload = ["'content': 'Looks like {$this->user_name} has started streaming their {$game_title} hijinx. You can check out their latest stream at https://www.twitch.tv/{$this->user_name}.'"];
+            $data = ["content" => "Looks like {$this->user_name} has started streaming their {$game_title} hijinx. You can check out their latest stream at https://www.twitch.tv/{$this->user_name}."];
+
+            $payload = json_encode($data);
+
             return $this->sendMessage($payload);
         }
     }
@@ -65,8 +71,8 @@ class DiscordCommenter {
      * @param array $payload : contents of Discord webhook payload to send
      * @return bool true : on success of curl
      */
-    public  function sendMessage(array $payload) : array {
-        $header = ['content-type': 'application/json'];
+    public  function sendMessage(string $payload) : bool {
+        $header = ['content-type: application/json'];
 
         $ch = curl_init();
 
@@ -74,9 +80,20 @@ class DiscordCommenter {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
 
         $result = curl_exec($ch);
+
+        $info = curl_getinfo($ch);
+        print_r($info['request_header']);
+
+        $errno = curl_errno($ch);
+        $error_message = curl_strerror($errno);
+        echo "cURL error ({$errno}): {$error_message} \n";
+
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        echo $httpCode . "\n";
 
         if ($result) {
             return json_decode($result, true);
