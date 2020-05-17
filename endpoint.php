@@ -36,7 +36,7 @@ if (count($argv) > 1) {
  * @return : void
  */
 function verifyHubChallenge() : void {
-    $challenge = $_GET['hub.challenge'];
+    $challenge = $_GET['hub_challenge'];
     http_response_code(200);
     print_r($challenge);
     exit();
