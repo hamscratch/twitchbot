@@ -36,6 +36,7 @@ if (count($argv) > 1) {
  * @return : void
  */
 function verifyHubChallenge() : void {
+    header("Content-Type: text/plain");
     $challenge = $_GET['hub_challenge'];
     http_response_code(200);
     echo $challenge;
