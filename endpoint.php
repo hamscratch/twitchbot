@@ -40,7 +40,6 @@ if (count($argv) > 1) {
 function verifyHubChallenge() : void {
     $challenge = $_GET['hub.challenge'];
     http_response_code(200);
-    echo "Challenge has come to server";
     echo $challenge;
     exit();
 }
