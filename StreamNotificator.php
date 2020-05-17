@@ -89,7 +89,7 @@ class StreamNotificator {
 
             // 864000 seconds = 10 days
             $data = [
-                "hub.callback" => "{$this->host_url}/{$this->endpoint_url}}",
+                "hub.callback" => "{$this->host_url}/{$this->endpoint_url}",
                 "hub.mode" => "subscribe",
                 "hub.topic" => "https://api.twitch.tv/helix/streams?user_id={$twitch_user_id}",
                 "hub.lease_seconds" => "864000",
