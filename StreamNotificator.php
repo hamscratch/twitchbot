@@ -47,7 +47,7 @@ class StreamNotificator {
         echo "cURL error ({$errno}): {$error_message} \n";
 
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        echo $httpCode;
+        echo $httpCode . "\n";
 
         if ($result) {
             var_dump($result);
