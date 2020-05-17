@@ -58,7 +58,7 @@ class StreamNotificator {
                 return true;
             } else {
                 echo "The response code does not match.\n";
-                return false
+                return false;
             }
         }
 
