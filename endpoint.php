@@ -17,7 +17,9 @@ if (count($argv) > 1) {
     $stream_notificator->subscribeToUser($twitch_user_id);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // if we get a challenge for our subscription via GET request
-            
+    
+    echo "Hey, you made a GET response!";
+
     verifyHubChallenge();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // if we get a payload with stream info via POST request

@@ -39,8 +39,12 @@ class StreamNotificator {
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
 
         $result = curl_exec($ch);
+
+        $info = curl_getinfo($ch);
+        print_r($info['request_header']);
 
         $errno = curl_errno($ch);
         $error_message = curl_strerror($errno);
