@@ -26,7 +26,7 @@ class StreamNotificator {
      * @param string $method : GET, POST
      * @return bool true : no idea
      */
-    public function invokeTwitchApi (string $url, array $headers, string $method, string $parameters = NULL, $success_codes = NULL) {
+    public function invokeTwitchApi (string $url, array $headers, string $method, string $parameters = NULL, array $success_codes = NULL) {
         
         $ch = curl_init();
 
@@ -98,7 +98,7 @@ class StreamNotificator {
             $payload = json_encode($data);
 
             echo "sending subscribing request \n";
-            $exec = $this->invokeTwitchApi($hub_url, $headers, 'POST', $payload, 202);
+            $exec = $this->invokeTwitchApi($hub_url, $headers, 'POST', $payload, [202]);
             var_dump($exec);
 
         } else {
