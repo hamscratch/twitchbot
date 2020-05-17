@@ -26,7 +26,7 @@ class StreamNotificator {
      * @param string $method : GET, POST
      * @return bool true : no idea
      */
-    public function invokeTwitchApi (string $url, array $headers, string $method, string $parameters = NULL, array $success_codes = NULL) {
+    public function invokeTwitchApi (string $url, array $headers, string $method, string $parameters = NULL, $success_code = NULL) {
         
         $ch = curl_init();
 
@@ -53,8 +53,8 @@ class StreamNotificator {
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         echo $http_code . "\n";
 
-        if (! is_null($success_codes)) {
-            if ($http_code === $success_codes) {
+        if (! is_null($success_code)) {
+            if ($http_code === $success_code) {
                 return true;
             } else {
                 echo "The response code does not match.\n";
@@ -98,7 +98,7 @@ class StreamNotificator {
             $payload = json_encode($data);
 
             echo "sending subscribing request \n";
-            $exec = $this->invokeTwitchApi($hub_url, $headers, 'POST', $payload, ['202']);
+            $exec = $this->invokeTwitchApi($hub_url, $headers, 'POST', $payload, 202);
             var_dump($exec);
 
         } else {
