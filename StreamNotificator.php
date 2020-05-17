@@ -5,11 +5,13 @@
  */
 class StreamNotificator {
 
+    public $twitch_client_id;
     public $twitch_auth_token;
     public $host_url;
     public $endpoint_url;
 
     public function __construct() {
+        $this->twitch_client_id = Secrets::TWITCH_CLIENT_ID;
         $this->twitch_auth_token = Secrets::TWITCH_AUTH_TOKEN;
         $this->host_url = Secrets::HOST_URL;
         $this->endpoint_url = Secrets::ENDPOINT_URL;
@@ -24,7 +26,7 @@ class StreamNotificator {
      * @param string $method : GET, POST
      * @return bool true : no idea
      */
-    public function invokeTwitchApi (string $url, array $headers, string $method, string $parameters = NULL) : array {
+    public function invokeTwitchApi (string $url, array $headers, string $method, string $parameters = NULL) {
         
         $ch = curl_init();
 
@@ -40,9 +42,19 @@ class StreamNotificator {
 
         $result = curl_exec($ch);
 
+        $errno = curl_errno($ch);
+        $error_message = curl_strerror($errno);
+        echo "cURL error ({$errno}): {$error_message} \n";
+
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        echo $httpCode;
+
         if ($result) {
+            var_dump($result);
             return json_decode($result, true);
         } else {
+            echo "request to {$url} failed \n";
+            var_dump($result);
             return false;
         }
     }
@@ -60,19 +72,22 @@ class StreamNotificator {
 
         if ($is_valid_token) {
             $hub_url = "https://api.twitch.tv/helix/webhooks/hub";
-            $headers = ["Authorization: Bearer {$this->twitch_auth_token}", "Content-Type: application/json"];
+            $headers = ["Authorization: Bearer {$this->twitch_auth_token}", "Client-ID: {$this->twitch_client_id}", "Content-Type: application/json"];
 
             // 864000 seconds = 10 days
             $data = [
                 "hub.callback" => "{$this->host_url}/{$this->endpoint_url}}",
                 "hub.mode" => "subscribe",
-                "hub.topic" => "https://api.twitch.tv/helix/streams?user_id={Ftwitch_user_id}",
+                "hub.topic" => "https://api.twitch.tv/helix/streams?user_id={$twitch_user_id}",
                 "hub.lease_seconds" => "864000",
                 ];
 
             $payload = json_encode($data);
 
+            echo "sending subscribing request \n";
             $exec = $this->invokeTwitchApi($hub_url, $headers, 'POST', $payload);
+            var_dump($exec);
+
         } else {
             // i should log this failure and report it
             $error_comment = "HALT, NONE SHALL PASS WITHOUT A VALID TOKEN...WHICH YOU DO NOT POSESS.";
