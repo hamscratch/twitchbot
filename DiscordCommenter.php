@@ -35,8 +35,6 @@ class DiscordCommenter {
     public $webhook_url;
 
     public function __construct(array $data) {
-        $payload = $data['data'];
-
         $this->id = $payload['id'];
         $this->user_id = $payload['user_id'];
         $this->user_name = $payload['user_name'];
