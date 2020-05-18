@@ -14,7 +14,7 @@ class StreamNotificator {
         $this->twitch_client_id = Secrets::TWITCH_CLIENT_ID;
         $this->twitch_auth_token = Secrets::TWITCH_AUTH_TOKEN;
         $this->host_url = Secrets::HOST_URL;
-        $this->endpoint_url = Secrets::ENDPOINT_URL;
+        $this->endpoint_path = Secrets::ENDPOINT_PATH;
     }
 
     /** 
@@ -89,7 +89,7 @@ class StreamNotificator {
 
             // 864000 seconds = 10 days
             $data = [
-                "hub.callback" => "{$this->host_url}" . "{$this->endpoint_url}",
+                "hub.callback" => "{$this->host_url}" . "{$this->endpoint_path}",
                 "hub.mode" => "subscribe",
                 "hub.topic" => "https://api.twitch.tv/helix/streams?user_id={$twitch_user_id}",
                 "hub.lease_seconds" => "864000",
