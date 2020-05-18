@@ -23,7 +23,7 @@ if (count($argv) > 1) {
     // if we get a payload with stream info via POST request
 
     $raw_payload = file_get_contents('php://input');
-    $payload = json_decode($raw_payload);
+    $payload = json_decode($raw_payload, true);
 
     $discord_commenter = new DiscordCommenter($payload);
     $discord_commenter->run();
