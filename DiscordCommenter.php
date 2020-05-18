@@ -35,14 +35,14 @@ class DiscordCommenter {
     public $webhook_url;
 
     public function __construct(array $payload) {
-        $this->id = $payload['id'];
-        $this->user_id = $payload['user_id'];
-        $this->user_name = $payload['user_name'];
-        $this->title = $payload['title'];
-        $this->game_id = $payload['game_id'];
-        $this->type = $payload['type'];
-        $this->started_at = $payload['started_at'];
-        $this->thumbnail_url = $payload['thumbnail_url'];
+        $this->id = $payload['data']['id'];
+        $this->user_id = $payload['data']['user_id'];
+        $this->user_name = $payload['data']['user_name'];
+        $this->title = $payload['data']['title'];
+        $this->game_id = $payload['data']['game_id'];
+        $this->type = $payload['data']['type'];
+        $this->started_at = $payload['data']['started_at'];
+        $this->thumbnail_url = $payload['data']['thumbnail_url'];
 
         $this->webhook_url = Secrets::DISCORD_WEBHOOK_URL;
     }
