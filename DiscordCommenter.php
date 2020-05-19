@@ -4,19 +4,20 @@
 // EXAMPLE PAYLOAD FROM ENDPOINT
 /*
 {
-"data": [{
-"id": "0123456789",
-"user_id": "5678",
-"user_name": "wjdtkdqhs",
-"game_id": "21779",
-"community_ids": [],
-"type": "live",
-"title": "Best Stream Ever",
-"viewer_count": 417,
-"started_at": "2017-12-01T10:09:45Z",
-"language": "en",
-"thumbnail_url": "https://link/to/thumbnail.jpg"
-}]
+"data": [
+    {
+        "id": "0123456789",
+        "user_id": "5678",
+        "user_name": "wjdtkdqhs",
+        "game_id": "21779",
+        "community_ids": [],
+        "type": "live",
+        "title": "Best Stream Ever",
+        "viewer_count": 417,
+        "started_at": "2017-12-01T10:09:45Z",
+        "language": "en",
+        "thumbnail_url": "https://link/to/thumbnail.jpg"
+    }]
 }
 */
 
@@ -54,8 +55,8 @@ class DiscordCommenter {
      */
     public function run() {
         if ($this->type === 'live') {
-            $game_title = 'pee'; //$this->getGameTitle($game_id);
-            $data = ["content" => "Looks like {$this->user_name} has started streaming their {$game_title} hijinx. You can check out their latest stream at https://www.twitch.tv/{$this->user_name}."];
+            $game_title = $this->getGameTitle($this->game_id);
+            $data = ["content" => "Looks like {$this->user_name} has started streaming their {$game_title} hijinx. You can check out their latest stream at https://www.twitch.tv/{$this->user_name}"];
 
             $payload = json_encode($data);
 
@@ -107,17 +108,18 @@ class DiscordCommenter {
      * @return string $result['data']['name'] : name of game
      */
     public function getGameTitle (string $game_id) : string {
+        $twitch_api = new StreamNotificator();
+
         $twitch_auth_token = Secrets::TWITCH_AUTH_TOKEN;
         $twitch_client_id = Secrets::TWITCH_CLIENT_ID;
 
-        $url = 'https://api.twitch.tv/helix/games';
+        $url = "https://api.twitch.tv/helix/games?id={$game_id}";
         $headers = ["Client-ID: {$twitch_client_id}", "Authorization: Bearer {$twitch_auth_token}"];
         $method = 'GET';
 
-        // fuck i don't have this in this class
-        $result = $this->invokeTwitchApi($url, $headers, $game_id, $method);
+        $result = $twitch_api->invokeTwitchApi($url, $headers, $method);
 
-        return $result['data']['name'];
+        return $result['data'][0]['name'];
     }
     
 }
