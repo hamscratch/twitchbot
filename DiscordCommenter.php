@@ -55,8 +55,8 @@ class DiscordCommenter {
      */
     public function run() {
         if ($this->type === 'live') {
-            $game_title = $this->getGameTitle($this->game_id);
-            $data = ["content" => "Looks like {$this->user_name} has started streaming their {$game_title} hijinx. You can check out their latest stream at https://www.twitch.tv/{$this->user_name}"];
+            //$game_title = $this->getGameTitle($this->game_id);
+            $data = ["content" => "{$this->user_name} has started streaming!. You can check it out at https://www.twitch.tv/{$this->user_name}"];
 
             $payload = json_encode($data);
 
