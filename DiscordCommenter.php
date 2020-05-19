@@ -117,9 +117,10 @@ class DiscordCommenter {
         $headers = ["Client-ID: {$twitch_client_id}", "Authorization: Bearer {$twitch_auth_token}"];
         $method = 'GET';
 
-        $result = $twitch_api->invokeTwitchApi($url, $headers, $method);
+        $raw_result = $twitch_api->invokeTwitchApi($url, $headers, $method);
+        $game_name = $raw_result['data'][0]['name'];
 
-        return $result['data'][0]['name'];
+        return $game_name;
     }
     
 }
