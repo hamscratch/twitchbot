@@ -9,9 +9,11 @@ class DiscordCommenter {
     const DISCORD_COMMENTER_NAMESPACE = 'discord_commenter';
 
     public $webhook_url;
+    public $logger;
 
     public function __construct() {
         $this->webhook_url = Secrets::DISCORD_WEBHOOK_URL;
+        $this->logger = new Logger();
     }
 
     /** 

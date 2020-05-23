@@ -24,7 +24,7 @@ class TwitchStream {
         $this->host_url = Secrets::HOST_URL;
         $this->endpoint_path = Secrets::ENDPOINT_PATH;
 
-        $this->logger = new TwitchLogger();
+        $this->logger = new Logger();
     }
 
     /** 
@@ -198,7 +198,7 @@ class TwitchStream {
      * @param list $payload : payload from twitch endpoint
      * @return array $discord_payload : array of relevant info
      */
-    public function processTwitchStreamPayload(array $payload : array) { 
+    public function processTwitchStreamPayload(array $payload) { 
         $user_id = $payload['data'][0]['user_id'];
         $user_name = $payload['data'][0]['user_name'];
         $game_title = $this->getGameTitle($payload['data'][0]['game_id']);
