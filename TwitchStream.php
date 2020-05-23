@@ -162,10 +162,10 @@ class TwitchStream {
 
         if ($response) {
             $payload = json_decode($response, true);
-            $game_name = $payload[0]['name'];
+            $game_name = $payload['data'][0]['name'];
             return $game_name;
         } else {
-            $message = 'Failed API call.';
+            $message = 'Failed getGameTitle call.';
             $logger->log_error($message, self::TWITCH_STREAM_NAMESPACE);
 
             return false;
@@ -199,21 +199,18 @@ class TwitchStream {
      * @return array $discord_payload : array of relevant info
      */
     public function processTwitchStreamPayload(array $payload : array) { 
-        $user_id = $payload[0]['user_id'];
-        $user_name = $payload[0]['user_name'];
-        $game_title = $this->getGameTitle($payload[0]['game_id']);
-        $stream_title = $payload[0]['title'];
+        $user_id = $payload['data'][0]['user_id'];
+        $user_name = $payload['data'][0]['user_name'];
+        $game_title = $this->getGameTitle($payload['data'][0]['game_id']);
+        $stream_title = $payload['data'][0]['title'];
 
         $message = '';
         
         if ($payload[0]['type'] === 'live') {
             // the stream has begun
-
             $message = sprintf(self::STREAM_HAS_STARTED, $user_name, $game_title, $user_name);
-
         } else {
             // the stream has ended.
-
             $message = sprintf(self::STREAM_HAS_ENDED, $user_name);
         }
 
