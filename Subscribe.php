@@ -5,7 +5,7 @@
 require __DIR__ . '/' . 'Loader.php';
 
 $twitch_stream = new TwitchStream();
-$twitch_logger = new TwitchLogger();
+$logger = new Logger();
 $log_namespace = 'subscribe';
 
 // array of valid user ids
@@ -17,11 +17,11 @@ if (count($argv) > 1) {
 	    $twitch_stream->subscribeToUser($twitch_user_id);
 	} else {
 		$message = "{$argv[1]} is not a valid user id.";
-		$twitch_logger->log_error($message, $log_namespace);
+		$logger->log_error($message, $log_namespace);
 	}
 } else {
 	$message = "Must provide a valid user id as script argument.";
-	$twitch_logger->log_error($message, $log_namespace);
+	$logger->log_error($message, $log_namespace);
 }
 
 

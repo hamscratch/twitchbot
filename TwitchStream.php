@@ -53,6 +53,8 @@ class TwitchStream {
 
         $result = curl_exec($ch);
 
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
         if (! is_null($success_code)) {
             if ($http_code === $success_code) {
                 return true;
