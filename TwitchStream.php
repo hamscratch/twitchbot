@@ -115,7 +115,7 @@ class TwitchStream {
      *
      * @return : void
      */
-    public function verifyHubChallenge($challenge) : void {
+    public function verifyHubChallenge() : void {
         header("Content-Type: text/plain");
         http_response_code(200);
         echo $challenge;
