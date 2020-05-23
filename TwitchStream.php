@@ -4,7 +4,12 @@
  * 
  */
 class TwitchStream {
-    const EMPTY_RESPONSE_STRING = '';
+
+    const TWITCH_STREAM_NAMESPACE = 'twitch_stream';
+
+    const STREAM_HAS_STARTED = "%s has started streaming some %s shenanigans. This stream is brought to you by our new sponsor, Charms Blowpops. It's two lollipop treats in one with Charms Blow Pop, a chewy, bubble gum center surrounded by a delicious, fruit-flavored, hard candy shell. You can check it out at https://www.twitch.tv/%s";
+
+    const STREAM_HAS_ENDED = "And that concludes %s's stream. We'd once again like to thank our sponsors, Charms Blowpops.";
 
     public $twitch_client_id;
     public $twitch_auth_token;
@@ -19,7 +24,7 @@ class TwitchStream {
         $this->host_url = Secrets::HOST_URL;
         $this->endpoint_path = Secrets::ENDPOINT_PATH;
 
-        $this->logger = new Logger();
+        $this->logger = new TwitchLogger();
     }
 
     /** 
@@ -48,28 +53,23 @@ class TwitchStream {
 
         $result = curl_exec($ch);
 
-        $info = curl_getinfo($ch);
-        print_r($info['request_header']);
-
-        $errno = curl_errno($ch);
-        $error_message = curl_strerror($errno);
-        echo "cURL error ({$errno}): {$error_message} \n";
-
-        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        echo $http_code . "\n";
-
         if (! is_null($success_code)) {
             if ($http_code === $success_code) {
                 return true;
             } else {
-                echo "The response code does not match.\n";
+                $message =  "The response code does not match.\n";
+                $logger->log_error($message, self::TWITCH_STREAM_NAMESPACE);
                 return false;
             }
         }
-
         if ($result) {
             return json_decode($result, true);
         } else {
+            $errno = curl_errno($ch);
+            $error_message = curl_strerror($errno);
+            $log_info = "cURL error ({$errno}): {$error_message} \n";
+            $logger->log_error($log_info, self::TWITCH_STREAM_NAMESPACE);
+
             return false;
         }
     }
@@ -99,13 +99,11 @@ class TwitchStream {
 
             $payload = json_encode($data);
 
-            echo "sending subscribing request \n";
             $exec = $this->invokeTwitchApi($hub_url, $headers, 'POST', $payload, 202);
-            var_dump($exec);
 
         } else {
-            $log_data = self::buildFailureLog('subscribeToUser', 'Token is not valid.');
-            $this->logger->writeToLogs($log_data);
+            $message = 'Token needs to be renewed.';
+            $logger->log_error($message, self::TWITCH_STREAM_NAMESPACE);
         }
     }
 
@@ -139,14 +137,12 @@ class TwitchStream {
 
         $validation_url = 'https://id.twitch.tv/oauth2/validate';
         $headers = ["Authorization: OAuth {$token}"];
-        $method = 'GET';
 
-        $response = $this->invokeTwitchApi($validation_url, $headers, $method);
+        $response = $this->invokeTwitchApi($validation_url, $headers, 'GET');
 
         if ($response['expires_in'] >= 10000) {
             return true;
         } else {
-            // return $this->renewToken();
             return false;
         }
     }
@@ -159,27 +155,19 @@ class TwitchStream {
      */
     public function getGameTitle (string $game_id) : string {
 
-        $twitch_auth_token = Secrets::TWITCH_AUTH_TOKEN;
-        $twitch_client_id = Secrets::TWITCH_CLIENT_ID;
-
         $url = "https://api.twitch.tv/helix/games?id={$game_id}";
-        $headers = ["Client-ID: {$twitch_client_id}", "Authorization: Bearer {$twitch_auth_token}"];
+        $headers = ["Client-ID: {$this->twitch_client_id}", "Authorization: Bearer {$this->twitch_auth_token}"];
 
-        $ch = curl_init();
+        $response = $this->invokeTwitchApi($url, $headers, 'GET');
 
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_GET, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
-
-        $result = curl_exec($ch);
-
-        if ($result) {
-            $payload = json_decode($result, true);
+        if ($response) {
+            $payload = json_decode($response, true);
             $game_name = $payload[0]['name'];
             return $game_name;
         } else {
+            $message = 'Failed API call.';
+            $logger->log_error($message, self::TWITCH_STREAM_NAMESPACE);
+
             return false;
         }
 
@@ -187,13 +175,63 @@ class TwitchStream {
     }
 
     /** 
-     * Receives payload from twitch and packages it nice
+     * Receives payload from twitch
      * 
-     * @param list $payload : current token
+     *   // EXAMPLE PAYLOAD FROM ENDPOINT
+     *   {
+     *   "data": [
+     *       {
+     *           "id": "0123456789",
+     *           "user_id": "5678",
+     *           "user_name": "wjdtkdqhs",
+     *           "game_id": "21779",
+     *           "community_ids": [],
+     *           "type": "live",
+     *           "title": "Best Stream Ever",
+     *           "viewer_count": 417,
+     *           "started_at": "2017-12-01T10:09:45Z",
+     *           "language": "en",
+     *           "thumbnail_url": "https://link/to/thumbnail.jpg"
+     *       }]
+     *   }
+     *
+     * @param list $payload : payload from twitch endpoint
      * @return array $discord_payload : array of relevant info
      */
-    public function processTwitchPayload(array $payload : array) {
+    public function processTwitchStreamPayload(array $payload : array) { 
+        $user_id = $payload[0]['user_id'];
+        $user_name = $payload[0]['user_name'];
+        $game_title = $this->getGameTitle($payload[0]['game_id']);
+        $stream_title = $payload[0]['title'];
 
+        $message = '';
+        
+        if ($payload[0]['type'] === 'live') {
+            // the stream has begun
+
+            $message = sprintf(self::STREAM_HAS_STARTED, $user_name, $game_title, $user_name);
+
+        } else {
+            // the stream has ended.
+
+            $message = sprintf(self::STREAM_HAS_ENDED, $user_name);
+        }
+
+        $this->sendStreamStatus($message);
+    }
+
+    /** 
+     * Sends a string to the DiscordCommenter class to send to the webhook
+     *
+     * 
+     */
+    public function sendStreamStatus(string $message) {
+            $discord_commenter = new DiscordCommenter(); 
+
+            $data = ["content" => "{$message}"];
+            $payload = json_encode($data);
+
+            $discord_commenter->sendMessage($payload);
     }
 
 }

@@ -1,24 +1,41 @@
 <?php
 
 /**
+ * Receives a payload from Twitch and sends it to DiscordCommenter
  *
- *
- *
- *
- * 
  */
 
 require __DIR__ . '/' . 'Loader.php';
 
-$stream_notificator = new StreamNotificator();
+$twitch_stream = new TwitchStream();
 
-if (count($argv) > 1) {
-    $twitch_user_id = $argv[1];
-    $stream_notificator->subscribeToUser($twitch_user_id);
-} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+$raw_payload = file_get_contents('php://input');
+$twitch_payload = json_decode($raw_payload, true);
+
+// I NEED TO MAKE THIS FUNCTION
+$processed_payload = $twitch_stream->processTwitchPayload($twitch_payload);
+
+$discord_commenter = new DiscordCommenter($processed_payload);
+$discord_commenter->run();
+
+
+
+
+
+
+
+
+
+
+
+
+
+// THIS IS NOT IN THE RIGHT SPOT. MOVE IT TO ITS CORRECT SPOTS
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // if we get a challenge for our subscription via GET request
 
-    verifyHubChallenge();
+    $twitch_stream->verifyHubChallenge();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // if we get a payload with stream info via POST request
 
@@ -27,18 +44,4 @@ if (count($argv) > 1) {
 
     $discord_commenter = new DiscordCommenter($payload);
     $discord_commenter->run();
-}
-
-/** 
- * If file receives a GET request, this will verify the 
- * hub challenge. 
- *
- * @return : void
- */
-function verifyHubChallenge() : void {
-    $challenge = $_GET['hub_challenge'];
-    header("Content-Type: text/plain");
-    http_response_code(200);
-    echo $challenge;
-    exit();
 }
