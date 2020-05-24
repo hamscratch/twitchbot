@@ -7,7 +7,7 @@ class TwitchStream {
 
     const TWITCH_STREAM_NAMESPACE = 'twitch_stream';
 
-    const STREAM_HAS_STARTED = "%s has started streaming some %s shenanigans. This stream is brought to you by our new sponsor, Charms Blowpops :blowpop:. It's two lollipop treats in one with Charms Blow Pop :blowpop:, a chewy, bubble gum center surrounded by a delicious, fruit-flavored, hard candy shell. You can check it out at https://www.twitch.tv/%s";
+    const STREAM_HAS_STARTED = "%s has started streaming some %s shenanigans. This stream is brought to you by our new sponsor, Charms Blowpops :blowpop: . It's two lollipop treats in one with Charms Blow Pop :blowpop: , a chewy, bubble gum center surrounded by a delicious, fruit-flavored, hard candy shell. You can check it out at https://www.twitch.tv/%s";
 
     public $twitch_client_id;
     public $twitch_auth_token;
