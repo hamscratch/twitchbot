@@ -201,14 +201,14 @@ class TwitchStream {
      * @return array $discord_payload : array of relevant info
      */
     public function processTwitchStreamPayload(array $payload) { 
-        $user_id = $payload['data']['user_id'];
-        $user_name = $payload['data']['user_name'];
+        $user_id = $payload['data'][0]['user_id'];
+        $user_name = $payload['data'][0]['user_name'];
         //$game_title = $this->getGameTitle($payload['data'][0]['game_id']);
-        $stream_title = $payload['data']['title'];
+        $stream_title = $payload['data'][0]['title'];
 
         $message = '';
         
-        if ($payload['type'] === 'live') {
+        if ($payload['data'][0]['type'] === 'live') {
             // the stream has begun
             $message = sprintf(self::STREAM_HAS_STARTED, $user_name, $game_title, $user_name);
         } else {
