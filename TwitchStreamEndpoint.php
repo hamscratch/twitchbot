@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $raw_payload = file_get_contents('php://input');
     $twitch_payload = json_decode($raw_payload, true);
 
-    if (! is_null($twitch_payload)) {
+    if (isset($twitch_payload['data'][0])) {
         $twitch_stream->processTwitchStreamPayload($twitch_payload);
     } 
 }
