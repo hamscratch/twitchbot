@@ -60,7 +60,7 @@ class TwitchStream {
                 return true;
             } else {
                 $message =  "The response code does not match.\n";
-                $logger->log_error($message, self::TWITCH_STREAM_NAMESPACE);
+                $this->logger->log_error($message, self::TWITCH_STREAM_NAMESPACE);
                 return false;
             }
         }
@@ -70,7 +70,7 @@ class TwitchStream {
             $errno = curl_errno($ch);
             $error_message = curl_strerror($errno);
             $log_info = "cURL error ({$errno}): {$error_message} \n";
-            $logger->log_error($log_info, self::TWITCH_STREAM_NAMESPACE);
+            $this->logger->log_error($log_info, self::TWITCH_STREAM_NAMESPACE);
 
             return false;
         }
@@ -105,7 +105,7 @@ class TwitchStream {
 
         } else {
             $message = 'Token needs to be renewed.';
-            $logger->log_error($message, self::TWITCH_STREAM_NAMESPACE);
+            $this->logger->log_error($message, self::TWITCH_STREAM_NAMESPACE);
         }
     }
 
@@ -168,7 +168,7 @@ class TwitchStream {
             return $game_name;
         } else {
             $message = 'Failed getGameTitle call.';
-            $logger->log_error($message, self::TWITCH_STREAM_NAMESPACE);
+            $this->logger->log_error($message, self::TWITCH_STREAM_NAMESPACE);
 
             return false;
         }

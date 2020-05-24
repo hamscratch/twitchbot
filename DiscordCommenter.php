@@ -42,7 +42,7 @@ class DiscordCommenter {
             $errno = curl_errno($ch);
             $error_message = curl_strerror($errno);
             $log_info = "cURL error ({$errno}): {$error_message} \n";
-            $logger->log_error($log_info, self::DISCORD_COMMENTER_NAMESPACE);
+            $this->logger->log_error($log_info, self::DISCORD_COMMENTER_NAMESPACE);
 
             return false;
         }
