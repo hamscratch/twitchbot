@@ -161,7 +161,7 @@ class TwitchStream {
 
         $response = $this->invokeTwitchApi($url, $headers, 'GET');
 
-        if ($response) {
+        if (! is_null($response)) {
             $game_name = $response['data'][0]['name'];
             return $game_name;
         } else {
