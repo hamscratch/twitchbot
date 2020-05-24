@@ -19,6 +19,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (! is_null($twitch_payload)) {
         $twitch_stream->processTwitchStreamPayload($twitch_payload);
     } 
-
-
 }

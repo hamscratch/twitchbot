@@ -203,7 +203,7 @@ class TwitchStream {
     public function processTwitchStreamPayload(array $payload) { 
         $user_id = $payload['data'][0]['user_id'];
         $user_name = $payload['data'][0]['user_name'];
-        //$game_title = $this->getGameTitle($payload['data'][0]['game_id']);
+        $game_title = $this->getGameTitle($payload['data'][0]['game_id']);
         $stream_title = $payload['data'][0]['title'];
 
         $message = '';
