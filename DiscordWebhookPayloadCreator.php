@@ -74,8 +74,8 @@ class DiscordWebhookPayloadCreator {
 		$formatted_payload = 
 			["embeds" => [
 				[
-				"title" => "New Stream Alert!",
-				"description" => "{$this->user_name} is now streaming!",
+				"title" => "{$this->user_name} is now streaming!",
+				"description" => "This stream is brought to you by our currenct sponsor, Charms Blowpops. Did you know that during World War II, the U.S. Army began including Charms candies in combat rations as a supplemental energy form. That tradition has continued with a few interruptions. - [source](https://en.wikipedia.org/wiki/Charms_Blow_Pops)",
 				"color" => 0x8f00ff,
 				"fields" => [
 					[
@@ -94,7 +94,7 @@ class DiscordWebhookPayloadCreator {
 					]
 				],
 				"image" => [
-					"url" => "https://media.giphy.com/media/RwLDkna2fN3fG/giphy.gif"
+					"url" => "https://media.giphy.com/media/5bvKQc6PLnqvhG0Bxj/giphy.gif"
 				],
 				"footer" => [
 					"text" => "No matter what the above says, we will always be sponsored by Burger King's flame broiled Rodeo Cheeseburger.",
