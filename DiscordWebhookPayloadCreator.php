@@ -62,15 +62,19 @@ class DiscordWebhookPayloadCreator {
 	public $user_name;
 	public $game_title;
 	public $stream_title;
+	public $gif_picker;
 
 	public function __construct(array $payload, string $game_title) {
 		$this->user_id = $payload['data'][0]['user_id'];
         $this->user_name = $payload['data'][0]['user_name'];
         $this->game_title = $game_title;
         $this->stream_title = $payload['data'][0]['title']; 
+        $this->gif_picker = new GifPicker();
 	}
 
 	public function formatPayload() {
+		$gif = $this->gif_picker->pickGif();
+
 		$formatted_payload = 
 			["embeds" => [
 				[
@@ -94,7 +98,7 @@ class DiscordWebhookPayloadCreator {
 					]
 				],
 				"image" => [
-					"url" => "https://media.giphy.com/media/5bvKQc6PLnqvhG0Bxj/giphy.gif"
+					"url" => "{$gif}"
 				],
 				"footer" => [
 					"text" => "No matter what the above says, we will always be sponsored by Burger King's flame broiled Rodeo Cheeseburger.",
