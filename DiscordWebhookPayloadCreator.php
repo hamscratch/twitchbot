@@ -66,7 +66,7 @@ class DiscordWebhookPayloadCreator {
 	public function __construct(array $payload, string $game_title) {
 		$this->user_id = $payload['data'][0]['user_id'];
         $this->user_name = $payload['data'][0]['user_name'];
-        $this->game_title = $game_name;
+        $this->game_title = $game_title;
         $this->stream_title = $payload['data'][0]['title']; 
 	}
 
