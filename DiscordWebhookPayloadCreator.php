@@ -75,8 +75,8 @@ class DiscordWebhookPayloadCreator {
 			["embeds" => [
 				[
 				"title" => "New Stream Alert!",
-				"description" => "Holy shit, {$this->user_name} is streaming RIGHT NOW!",
-				"color" => 15258703,
+				"description" => "{$this->user_name} is now streaming!",
+				"color" => 0x8f00ff,
 				"fields" => [
 					[
 						"name" => "Game",
@@ -90,7 +90,7 @@ class DiscordWebhookPayloadCreator {
 					],
 					[
 						"name" => "Stream",
-						"value" => "To follow along with {$this->user_name}'s shenanigans, [click here](https://www.twitch.tv/{$this->user_name}) <:showmewhatyougot:712480575843205220>",
+						"value" => "Click here](https://www.twitch.tv/{$this->user_name}) to follow along with {$this->user_name}'s shenanigans. <:showmewhatyougot:712480575843205220>",
 					]
 				],
 				"image" => [
