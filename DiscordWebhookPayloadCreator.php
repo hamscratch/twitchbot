@@ -75,7 +75,7 @@ class DiscordWebhookPayloadCreator {
 			["embeds" => [
 				[
 				"title" => "New Stream Alert!",
-				"description" => "Holy shit, {{$this->user_name}} is streaming RIGHT NOW!",
+				"description" => "Holy shit, {$this->user_name} is streaming RIGHT NOW!",
 				"color" => 15258703,
 				"fields" => [
 					[
