@@ -7,8 +7,6 @@ class TwitchStream {
 
     const TWITCH_STREAM_NAMESPACE = 'twitch_stream';
 
-    const STREAM_HAS_STARTED = "%s has started streaming some %s shenanigans. This stream is brought to you by our new sponsor, Charms Blowpops. It's two lollipop treats in one with Charms Blow Pop, a chewy, bubble gum center surrounded by a delicious, fruit-flavored, hard candy shell. You can check it out at https://www.twitch.tv/%s";
-
     public $twitch_client_id;
     public $twitch_auth_token;
     public $host_url;
@@ -198,7 +196,23 @@ class TwitchStream {
      * @param list $payload : payload from twitch endpoint
      * @return array $discord_payload : array of relevant info
      */
-    public function processTwitchStreamPayload(array $payload) { 
+    public function processTwitchStreamPayload(array $twitch_payload) { 
+        $game_id = $twitch_payload['data'][0]['game_id'];
+        $game_title = $this->getGameTitle($game_id);
+
+        $discord_payload = new DiscordWebhookPayloadCreator($twitch_payload, $game_title);
+
+        $raw_message = $discord_payload->formatPayload();
+
+        $message = json_encode($raw_message);
+
+        if ($twitch_payload['data'][0]['type'] === 'live') {
+            // the stream has begun
+
+            $this->sendStreamStatus($message);
+        }        
+
+        /*
         $user_id = $payload['data'][0]['user_id'];
         $user_name = $payload['data'][0]['user_name'];
         $game_id = $payload['data'][0]['game_id'];
@@ -212,7 +226,8 @@ class TwitchStream {
             $message = sprintf(self::STREAM_HAS_STARTED, $user_name, $game_title, $user_name);
 
             $this->sendStreamStatus($message);
-        }        
+        }
+        */        
     }
 
     /** 
@@ -223,10 +238,7 @@ class TwitchStream {
     public function sendStreamStatus(string $message) {
             $discord_commenter = new DiscordCommenter(); 
 
-            $data = ["content" => "{$message}"];
-            $payload = json_encode($data);
-
-            $discord_commenter->sendMessage($payload);
+            $discord_commenter->sendMessage($message);
     }
 
 }
