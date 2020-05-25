@@ -90,7 +90,7 @@ class DiscordWebhookPayloadCreator {
 					],
 					[
 						"name" => "Stream",
-						"value" => "Click here](https://www.twitch.tv/{$this->user_name}) to follow along with {$this->user_name}'s shenanigans. <:showmewhatyougot:712480575843205220>",
+						"value" => "[Click here](https://www.twitch.tv/{$this->user_name}) to follow along with {$this->user_name}'s shenanigans. <:showmewhatyougot:712480575843205220>",
 					]
 				],
 				"image" => [
