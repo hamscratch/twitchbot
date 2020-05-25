@@ -79,18 +79,23 @@ class TwitchStream {
      * @param string $twitch_user_id : a user's twitch id
      * @return mixed 
      */
-    public function subscribeToUser(string $twitch_user_id) {
+    public function subscribeToUser(string $twitch_user_id, $unsubscribe = false) {
+        $hub_mode_status = 'subscribe';
         
         $is_valid_token = $this->isTokenValid($this->twitch_auth_token);
 
         if ($is_valid_token) {
+            if ($unsubscribe === true) {
+                $hub_mode_status = 'unsubscribe';
+            }
+
             $hub_url = "https://api.twitch.tv/helix/webhooks/hub";
             $headers = ["Authorization: Bearer {$this->twitch_auth_token}", "Client-ID: {$this->twitch_client_id}", "Content-Type: application/json"];
 
             // 864000 seconds = 10 days
             $data = [
                 "hub.callback" => "{$this->host_url}" . "{$this->endpoint_path}",
-                "hub.mode" => "subscribe",
+                "hub.mode" => "$hub_mode_status",
                 "hub.topic" => "https://api.twitch.tv/helix/streams?user_id={$twitch_user_id}",
                 "hub.lease_seconds" => "864000",
                 ];

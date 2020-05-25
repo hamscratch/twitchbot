@@ -14,7 +14,11 @@ $valid_user_ids = Secrets::VALID_USER_IDS;
 if (count($argv) > 1) {
 	if (in_array($argv[1], $valid_user_ids)) {
 		$twitch_user_id = $argv[1];
-	    $twitch_stream->subscribeToUser($twitch_user_id);
+		if ($argv[2] === true) {
+			$twitch_stream->subscribeToUser($twitch_user_id, true);
+		} else {
+	    	$twitch_stream->subscribeToUser($twitch_user_id);
+		}	
 	} else {
 		$message = "{$argv[1]} is not a valid user id.";
 		$logger->log_error($message, $log_namespace);

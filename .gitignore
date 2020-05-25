@@ -2,3 +2,4 @@
 Secrets.php
 test.php
 curl_helper.php
+discord_webhook_tester.php
