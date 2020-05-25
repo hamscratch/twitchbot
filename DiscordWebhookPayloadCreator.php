@@ -44,7 +44,6 @@ class DiscordWebhookPayloadCreator {
         $this->user_name = $payload['data'][0]['user_name'];
         $this->game_title = $game_title;
         $this->stream_title = $payload['data'][0]['title']; 
-        $this->gif_picker = new GifPicker();
 	}
 
 	public function formatPayload() {
