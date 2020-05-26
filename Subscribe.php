@@ -34,11 +34,9 @@ if (count($argv) > 1) {
 		$logger->log_error($message, $log_namespace);
 	}
 } else {
-	$failure_info = $logger->buildFailureLog($scipt_name, 'subscribe');
+	$response = "Must provide a valid user id as script argument.";
+	$failure_info = $logger->buildFailureLog($scipt_name, 'subscribe', $response);
 	$logger->log_error($failure_info, $log_namespace);
-
-	$message = "Must provide a valid user id as script argument.";
-	$logger->log_error($message, $log_namespace, $failure_info);
 }
 
 

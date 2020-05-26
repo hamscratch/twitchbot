@@ -35,15 +35,11 @@ class Logger {
 
 	}
 
-	private function log(string $message, string $path, string $failure_info = null) {
+	private function log(string $message, string $path) {
 		$log_base = '/var/log/apache2/';
 		$log_path = $log_base . $path;
 
-		if ($failure_info) {
-			$log_message = $failure_info . $message . "\n";
-		} else {
-			$log_message = $message . "\n";
-		}	
+		$log_message = $message . "\n";	
 
 		error_log($log_message, 3, $log_path);
 	}
