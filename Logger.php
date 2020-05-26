@@ -29,7 +29,7 @@ class Logger {
 
 		$log_data['response'] = $response ?? $empty_string_response;
 
-		$failure_info = print_r($log_data, true);
+		$failure_info = json_encode($log_data, true);
 
 		return $failure_info;
 
