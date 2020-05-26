@@ -26,6 +26,7 @@ class DiscordWebhookPayloadCreator {
 		'https://media.giphy.com/media/l2Je733DgHfXIWEve/giphy.gif', // alf pogs
 		'https://media.giphy.com/media/SFp9RLto964Ew/giphy.gif', // poochie
 		'https://media.giphy.com/media/DyM4NUSmuJV3G/giphy.gif', // mr sparkle
+		'https://media.giphy.com/media/CbY83hpLkcrZe/giphy.gif', // yeehaw laso roach
 	];
 
 	const SPONSORS = [
