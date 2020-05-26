@@ -22,9 +22,9 @@ class Logger {
 		$empty_string_response = '';
 
 		$log_data = [
+			'timestamp' => date('c'),
 			'class' => $class,
-			'failed_call' => $call_name,
-			'timestamp' => microtime(true)
+			'failed_call' => $call_name
 		];
 
 		$log_data['response'] = $response ?? $empty_string_response;
