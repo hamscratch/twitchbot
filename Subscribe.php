@@ -31,13 +31,13 @@ if (count($argv) > 1) {
 		}	
 	} else {
 		$response = "{$argv[1]} is not a valid user id.";
-		$failure_info = $logger->buildFailureLog($scipt_name, $log_namespace, $response);
-		$logger->log_error($failure_info, $log_namespace);
+		$failure_info = $this->logger->buildFailureLog($scipt_name, $log_namespace, $response);
+		$this->logger->log_error($failure_info, $log_namespace);
 	}
 } else {
 	$response = "Must provide a valid user id as script argument.";
-	$failure_info = $logger->buildFailureLog($scipt_name, $log_namespace, $response);
-	$logger->log_error($failure_info, $log_namespace);
+	$failure_info = $this->logger->buildFailureLog($scipt_name, $log_namespace, $response);
+	$this->logger->log_error($failure_info, $log_namespace);
 }
 
 

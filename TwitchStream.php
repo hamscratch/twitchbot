@@ -66,7 +66,7 @@ class TwitchStream {
             $errno = curl_errno($ch);
             $error_message = curl_strerror($errno);
             $log_info = "cURL error ({$errno}): {$error_message}";
-            $failure_info = $logger->buildFailureLog(self::TWITCH_STREAM_NAMESPACE, 'invokeTwitchApi', $log_info);
+            $failure_info = $this->logger->buildFailureLog(self::TWITCH_STREAM_NAMESPACE, 'invokeTwitchApi', $log_info);
 
             $this->logger->log_error($failure_info, self::TWITCH_STREAM_NAMESPACE);
 
@@ -108,7 +108,7 @@ class TwitchStream {
 
         } else {
             $message = 'Token needs to be renewed.';
-            $failure_info = $logger->buildFailureLog(self::TWITCH_STREAM_NAMESPACE, 'subscribeToUser', $message);
+            $failure_info = $this->logger->buildFailureLog(self::TWITCH_STREAM_NAMESPACE, 'subscribeToUser', $message);
             $this->logger->log_error($failure_info, self::TWITCH_STREAM_NAMESPACE);
         }
     }
