@@ -65,8 +65,10 @@ class TwitchStream {
         } else {
             $errno = curl_errno($ch);
             $error_message = curl_strerror($errno);
-            $log_info = "cURL error ({$errno}): {$error_message} \n";
-            $this->logger->log_error($log_info, self::TWITCH_STREAM_NAMESPACE);
+            $log_info = "cURL error ({$errno}): {$error_message}";
+            $failure_info = $logger->buildFailureLog(self::TWITCH_STREAM_NAMESPACE, 'invokeTwitchApi', $log_info);
+
+            $this->logger->log_error($failure_info, self::TWITCH_STREAM_NAMESPACE);
 
             return false;
         }
@@ -106,7 +108,8 @@ class TwitchStream {
 
         } else {
             $message = 'Token needs to be renewed.';
-            $this->logger->log_error($message, self::TWITCH_STREAM_NAMESPACE);
+            $failure_info = $logger->buildFailureLog(self::TWITCH_STREAM_NAMESPACE, 'subscribeToUser', $message);
+            $this->logger->log_error($failure_info, self::TWITCH_STREAM_NAMESPACE);
         }
     }
 
@@ -168,9 +171,6 @@ class TwitchStream {
             $game_name = $response['data'][0]['name'];
             return $game_name;
         } else {
-            $message = 'Failed getGameTitle call.';
-            $this->logger->log_error($message, self::TWITCH_STREAM_NAMESPACE);
-
             return false;
         }
 
