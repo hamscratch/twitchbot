@@ -6,6 +6,7 @@
 class TwitchStream {
 
     const TWITCH_STREAM_NAMESPACE = 'twitch_stream';
+    const PAYLOD_ID_LOG = '/var/log/apache2/payload_id_log.log';
 
     public $twitch_client_id;
     public $twitch_auth_token;
@@ -202,6 +203,7 @@ class TwitchStream {
      * @return array $discord_payload : array of relevant info
      */
     public function processTwitchStreamPayload(array $twitch_payload) { 
+        $payload_id = $twitch_payload['data'][0]['id'];
         $game_id = $twitch_payload['data'][0]['game_id'];
         $game_title = $this->getGameTitle($game_id);
 
@@ -211,29 +213,42 @@ class TwitchStream {
 
         $message = json_encode($raw_message);
 
-        if ($twitch_payload['data'][0]['type'] === 'live') {
-            // the stream has begun
+        $is_new_id = checkIfNewId($payload_id);
 
-            $this->sendStreamStatus($message);
+        if ($is_new_id) {
+            if ($twitch_payload['data'][0]['type'] === 'live') {
+                // the stream has begun
+
+                $this->logPayloadId($payload_id);
+
+                $this->sendStreamStatus($message);
+            }
+        }
+    }
+
+    private function checkIfNewId(string $payload_id) : bool {
+        $log_file = self::PAYLOD_ID_LOG;
+
+        $file_contents = file_get_contents($log_file);
+
+        $array_of_ids = explode(",", $file_contents);
+
+        if (! in_array($payload_id, $array_of_ids)) {
+            return true;
+        } else {
+            return false;
         }        
 
-        /*
-        $user_id = $payload['data'][0]['user_id'];
-        $user_name = $payload['data'][0]['user_name'];
-        $game_id = $payload['data'][0]['game_id'];
-        $game_title = $this->getGameTitle($game_id);
-        $stream_title = $payload['data'][0]['title'];
 
-        $message = '';
-        
-        if ($payload['data'][0]['type'] === 'live') {
-            // the stream has begun
-            $message = sprintf(self::STREAM_HAS_STARTED, $user_name, $game_title, $user_name);
-
-            $this->sendStreamStatus($message);
-        }
-        */        
     }
+
+    private function logPayloadId(string $payload_id) {
+        $log_file = self::PAYLOD_ID_LOG;
+
+        $formatted_payload_id = $payload_id . ",";
+
+        file_put_contents($log_file, $formatted_payload_id, FILE_APPEND);
+    }        
 
     /** 
      * Sends a string to the DiscordCommenter class to send to the webhook
