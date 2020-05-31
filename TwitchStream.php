@@ -213,7 +213,7 @@ class TwitchStream {
 
         $message = json_encode($raw_message);
 
-        $is_new_id = checkIfNewId($payload_id);
+        $is_new_id = $this->checkIfNewId($payload_id);
 
         if ($is_new_id) {
             if ($twitch_payload['data'][0]['type'] === 'live') {
