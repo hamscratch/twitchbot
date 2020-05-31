@@ -27,11 +27,18 @@ class DiscordWebhookPayloadCreator {
 		'https://media.giphy.com/media/SFp9RLto964Ew/giphy.gif', // poochie
 		'https://media.giphy.com/media/DyM4NUSmuJV3G/giphy.gif', // mr sparkle
 		'https://media.giphy.com/media/CbY83hpLkcrZe/giphy.gif', // yeehaw laso roach
+		'https://media.giphy.com/media/fJKG1UTK7k64w/giphy.gif', // homer's webpage
+		'https://media.giphy.com/media/lKnWJGOPuZYVG/giphy.gif', // virtual chili
+		'https://media.giphy.com/media/ePgtEFMaPueSQ/giphy.gif', // lenny blinks
+		'https://media.giphy.com/media/l2Je6m6JQhZ8eByJq/giphy.gif', // pray for mojo
+		'https://media.giphy.com/media/xT5LMwerqFetjEnHji/giphy.gif', // use your nails
+		'https://media.giphy.com/media/l2JehbpbyVfTS8zZK/giphy.gif', // white suit
 	];
 
 	const SPONSORS = [
 		"This stream is brought to you by our currenct sponsor, Charms Blowpops. Did you know that during World War II, the U.S. Army began including Charms candies in combat rations as a supplemental energy form. That tradition has continued with a few interruptions. - [Source](https://en.wikipedia.org/wiki/Charms_Blow_Pops)",
 		"This stream is brought to you by our currenct sponsor, the classic fan favorite, none other than the flame broiled Rodeo Cheeseburger from Burger King. Our new Rodeo Burger features a savory flame-grilled beef patty topped with sweet and smoky BBQ sauce and crispy, golden onion rings served on a toasted, sesame seed bun.",
+		"This stream is brought to you by our current sponsor, [Nickelodeon's Gak](https://www.youtube.com/watch?v=_iDALjY4QnY). Did you know name 'gak' had previously been used by Marc Summers and the Double Dare crew to refer to slime used on the show. The name had originated as a street term for heroin. This was a source of amusement behind the scenes of Double Dare when Nickelodeon used the term for the toy Gak, unaware of its origin in drug culture. - [Source](https://en.wikipedia.org/wiki/Nickelodeon_Toys#Gak)",
 	];
 
 	public $user_id;
