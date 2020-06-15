@@ -172,10 +172,9 @@ class TwitchStream {
             $game_name = $response['data'][0]['name'];
             return $game_name;
         } else {
-            return false;
+            $error_message = "Game Unknown";
+            return $error_message;
         }
-
-        return $game_name;
     }
 
     /** 
