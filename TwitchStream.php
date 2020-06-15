@@ -202,6 +202,9 @@ class TwitchStream {
      * @return array $discord_payload : array of relevant info
      */
     public function processTwitchStreamPayload(array $twitch_payload) { 
+        $payload_string = json_encode($twitch_payload);
+        error_log($payload_string, 3, '/var/log/apache2/twitch_payload_contents');
+
         $payload_id = $twitch_payload['data'][0]['id'];
         $game_id = $twitch_payload['data'][0]['game_id'];
         $game_title = $this->getGameTitle($game_id);
