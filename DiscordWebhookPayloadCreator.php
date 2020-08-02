@@ -51,6 +51,7 @@ class DiscordWebhookPayloadCreator {
 		'https://media.giphy.com/media/3o7TKtIZdurmU8Igvu/giphy.gif', // mr poopy b hole
 		'https://media.giphy.com/media/vMnuZGHJfFSTe/giphy.gif', // wayne's world excellent
 		'https://media.giphy.com/media/Nx0rz3jtxtEre/giphy.gif', // hello there kenobi
+		'https://giphy.com/gifs/season-4-the-simpsons-4x22-3orieQxWzEndtoNSxi', // gabbo is coming
 	];
 
 	const SPONSORS = [
