@@ -204,12 +204,15 @@ class TwitchStream {
     public function processTwitchStreamPayload(array $twitch_payload) { 
         $payload_id = $twitch_payload['data'][0]['id'];
         $game_id = $twitch_payload['data'][0]['game_id'];
-        
+        $game_title = "I'm too lazy to figure this out";
+
+        /*
         if (!empty($game_id)) {
             $game_title = $this->getGameTitle($game_id);
         } else {
            $game_title = "Unknown Game. BG Twitch"; 
         }
+        */
 
         $discord_payload = new DiscordWebhookPayloadCreator($twitch_payload, $game_title);
 
